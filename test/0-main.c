@@ -132,6 +132,9 @@ void init_window()
 void process_input() {
     SDL_Event event;
     SDL_PollEvent(&event);
+
+    const Uint8 *state = SDL_GetKeyboardState(NULL);
+
     switch (event.type)
     {
         case SDL_QUIT:
@@ -172,6 +175,27 @@ void process_input() {
         
         default:
             break;
+    }
+    // continuous movement
+    if (state[SDL_SCANCODE_W])
+    {
+        player.x += cos(player.angle * M_PI / 180) * 0.1;
+        player.y += sin(player.angle * M_PI / 180) * 0.1;
+    }
+    if (state[SDL_SCANCODE_S])  // Move backward
+    {
+        player.x -= cos(player.angle * M_PI / 180) * 0.1;
+        player.y -= sin(player.angle * M_PI / 180) * 0.1;
+    }
+    if (state[SDL_SCANCODE_A])  // Strafe left
+    {
+        player.x += cos((player.angle - 90) * M_PI / 180) * 0.1;
+        player.y += sin((player.angle - 90) * M_PI / 180) * 0.1;
+    }
+    if (state[SDL_SCANCODE_D])  // Strafe right
+    {
+        player.x += cos((player.angle + 90) * M_PI / 180) * 0.1;
+        player.y += sin((player.angle + 90) * M_PI / 180) * 0.1;
     }
 }
 
