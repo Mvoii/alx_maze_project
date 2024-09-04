@@ -1,10 +1,12 @@
 #include <SDL2/SDL.h>
 #include <math.h>
+#include <stdio.h>
+#include <string.h>
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
-#define MAP_WIDTH 8
-#define MAP_HEIGHT 8
+#define MAP_WIDTH 12
+#define MAP_HEIGHT 12
 #define FOV 60
 
 // Define colors
@@ -12,17 +14,26 @@
 #define FLOOR_COLOR 0x8B4513    // Saddle brown
 #define WALL_COLOR_NS 0xA0522D  // Sienna (for North/South facing walls)
 #define WALL_COLOR_EW 0x8B0000  // Dark Red (for East/West facing walls)
+#define MAP_WALL_COLOR 0xFF0000 // Red (for map walls)
+#define MAP_EMPTY_SPACE 0x00FF00 // Green (for map empty space)
+#define MAP_LINE_COLOR 0xFFFF00  // Yellow (for player line of sight)
 
-int map[MAP_WIDTH][MAP_HEIGHT] = {
-    {1,1,1,1,1,1,1,1},
-    {1,0,0,0,0,0,0,1},
-    {1,0,0,0,0,1,0,1},
-    {1,0,1,0,0,0,0,1},
-    {1,0,1,0,0,0,0,1},
-    {1,0,1,0,0,1,0,1},
-    {1,0,0,0,0,0,0,1},
-    {1,1,1,1,1,1,1,1}
-};
+// int map[MAP_WIDTH][MAP_HEIGHT] = {
+//     {1,1,1,1,1,1,1,1,1,1,1,1},
+//     {1,0,0,1,0,0,0,0,0,0,0,1},
+//     {1,0,0,1,0,1,1,1,1,0,0,1},
+//     {1,0,0,1,0,1,0,0,1,0,0,1},
+//     {1,0,0,1,0,1,0,1,1,1,0,1},
+//     {1,0,0,0,0,1,0,0,0,0,0,1},
+//     {1,0,1,1,1,1,0,1,1,1,0,1},
+//     {1,0,1,0,0,0,0,1,0,0,0,1},
+//     {1,0,1,1,1,1,0,1,1,1,0,1},
+//     {1,0,0,0,0,0,0,0,0,0,0,1},
+//     {1,0,0,1,1,1,1,1,1,1,0,1},
+//     {1,1,1,1,1,1,1,1,1,1,1,1}
+// };
+int map[MAP_HEIGHT][MAP_WIDTH];
+int showMap = 0;
 
 typedef struct {
     double x;
@@ -30,7 +41,7 @@ typedef struct {
     double angle;
 } Player;
 
-Player player = {4, 4, 0};  // Start in the middle of the map
+Player player = {2, 2, 0};  // Start in the middle of the map
 
 int running = 1;
 SDL_Window* window = NULL;
@@ -114,7 +125,21 @@ void init_window()
     }
 }
 
-void process_input() {
+int isColliding(double x, double y)
+{
+    int mapX = (int)x;
+    int mapY = (int)y;
+
+    // check map bounderies
+    if (mapX < 0 || mapX >= MAP_WIDTH || mapY < 0 || mapY >= MAP_HEIGHT)
+    {
+        return 1;
+    }
+    return 0;
+}
+
+void process_input()
+{
     SDL_Event event;
     SDL_PollEvent(&event);
 
@@ -161,27 +186,89 @@ void process_input() {
             break;
     }
 
+    // player next potential position
+    double moveStep = 0.01;
+    double nextX = player.x;
+    double nextY = player.y;
+
     // continuous movement
     if (state[SDL_SCANCODE_W])
     {
-        player.x += cos(player.angle * M_PI / 180) * 0.1;
-        player.y += sin(player.angle * M_PI / 180) * 0.1;
+        nextX += cos(player.angle * M_PI / 180) * moveStep;
+        nextY += sin(player.angle * M_PI / 180) * moveStep;
     }
     if (state[SDL_SCANCODE_S])  // Move backward
     {
-        player.x -= cos(player.angle * M_PI / 180) * 0.1;
-        player.y -= sin(player.angle * M_PI / 180) * 0.1;
+        nextX -= cos(player.angle * M_PI / 180) * moveStep;
+        nextY -= sin(player.angle * M_PI / 180) * moveStep;
     }
     if (state[SDL_SCANCODE_A])  // Strafe left
     {
-        player.x += cos((player.angle - 90) * M_PI / 180) * 0.1;
-        player.y += sin((player.angle - 90) * M_PI / 180) * 0.1;
+        nextX += cos((player.angle - 90) * M_PI / 180) * moveStep;
+        nextY += sin((player.angle - 90) * M_PI / 180) * moveStep;
     }
     if (state[SDL_SCANCODE_D])  // Strafe right
     {
-        player.x += cos((player.angle + 90) * M_PI / 180) * 0.1;
-        player.y += sin((player.angle + 90) * M_PI / 180) * 0.1;
+        nextX += cos((player.angle + 90) * M_PI / 180) * moveStep;
+        nextY += sin((player.angle + 90) * M_PI / 180) * moveStep;
     }
+
+    // collison and sliding logic
+    //if (!isColliding(player.x, player.y))
+    //{
+    //    player.x = nextX;
+    //    player.y = nextY;
+    //}
+    //else if(!isColliding(player.x, nextY))
+    //{
+    //    player.x = nextX;
+    //}
+    //else if(!isColliding(nextX, player.y))
+    //{
+    //    player.y = nextY;
+    //}
+
+    int collidingX = isColliding(nextX, player.y);
+    int collidingY = isColliding(player.x, nextY);
+    int collidingXY = isColliding(nextX, nextY);
+
+    if (!collidingXY)
+    {
+        if (!collidingX)
+        {
+            player.x = nextX;   // move along X
+        }
+        if (!collidingY)
+        {
+            player.y = nextY;   // move along Y
+        }
+    }
+}
+
+void load_map(const char *filename)
+{
+    FILE *file = fopen(filename, "r");
+    if (!file)
+    {
+        fprintf(stderr, "Unable to open file: %s\n", filename);
+        exit(1);
+    }
+
+    for (int y = 0; y < MAP_HEIGHT; y++)
+    {
+        for (int x = 0; x < MAP_WIDTH; x++)
+        {
+            char c = fgetc(file);
+            if (c == EOF || c == '\n')
+            {
+                break;
+            }
+            map[y][x] = (c == '#') ? 1 : 0;
+        }
+        // skip newline
+        fgetc(file);
+    }
+    fclose(file);
 }
 
 void destroy_window()
@@ -191,7 +278,17 @@ void destroy_window()
     SDL_Quit();
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
+    if (argc < 2)
+    {
+        fprintf(stderr, "Usage: %s <map_file>\n", argv[0]);
+        exit(1);
+    }
+
+    load_map(argv[1]);
+
+
     init_window();
 
     while (running) {
