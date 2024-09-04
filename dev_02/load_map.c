@@ -19,7 +19,7 @@ void load_map(const char *filename)
     {
         for (int x = 0; x < MAP_WIDTH && buffer[x] != '\0'; x++)
         {
-            map[y][x] = buffer[x] == '1' ? 1 : 0;
+            map[y][x] = buffer[x] == '#' ? 1 : 0;
         }
         y++;
     }

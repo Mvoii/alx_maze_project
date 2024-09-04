@@ -14,7 +14,7 @@
 #define MAP_HEIGHT 12
 #define FOV 60
 #define MAP_SCALE 20
-#define M_PI 3.14159265358979323846
+//#define M_PI 3.14159265358979323846
 
 /* colors */
 #define CEILING_COLOR 0x87CEEB      // sky blue
@@ -24,7 +24,7 @@
 #define WALL_COLOR_EW 0x8B0000      // Dark Red (for EW walls)
 #define MAP_WALL_COLOR 0x000000  // black
 //#define MAP_WALL_COLOR 0xFF0C00     // Red (for map walls)
-#define MAP_EMPTY_COLOR 0x00FF20    // Green (for map floor)
+#define MAP_EMPTY_COLOR 0x0CF0F    // Green (for map floor)
 #define MAP_PLAYER_COLOR 0x0000FF   // Blue (for player)
 #define MAP_LINE_COLOR 0xFF00FF    // Magenta (for rays)
 // #define MAP_LINE_COLOR 0xFFFF00     // Yellow (for player line of sight)

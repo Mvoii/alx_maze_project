@@ -68,7 +68,7 @@ void process_input(void)
     }
 
     /* player next potential position */
-    double move_step = 0.1;
+    double move_step = 0.01;
     double next_x = player.x;
     double next_y = player.y;
 
@@ -76,7 +76,7 @@ void process_input(void)
     if (state[SDL_SCANCODE_W])
     {
         next_x += cos(player.angle * M_PI / 180) * move_step;
-        next_y -= sin(player.angle * M_PI / 180) * move_step;
+        next_y += sin(player.angle * M_PI / 180) * move_step;
     }
 
     if (state[SDL_SCANCODE_S])

@@ -1,6 +1,6 @@
 #include "maze.h"
 
-int map[MAP_HEIGHT][MAP_WIDTH];     //defined only here
+int map[MAP_WIDTH][MAP_HEIGHT];
 int running = 1;
 int show_map = 1;
 SDL_Window *window = NULL;
@@ -21,7 +21,7 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Usage: %s <mapfile>\n", argv[0]);
         return 1;
     }
-
+    printf("\tgame  starting\n \n \tmap %s\n", argv[1]);
     init_window();
     load_map(argv[1]);
 
@@ -43,5 +43,7 @@ int main(int argc, char *argv[])
     }
 
     destroy_window();
+
+    printf("\n\tgame  ending\n");
     return (0);
 }
