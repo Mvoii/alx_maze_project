@@ -17,6 +17,7 @@
 #define MAP_WALL_COLOR 0xFF0000 // Red (for map walls)
 #define MAP_EMPTY_SPACE 0x00FF00 // Green (for map empty space)
 #define MAP_LINE_COLOR 0xFFFF00  // Yellow (for player line of sight)
+#define MAP_SCALE 20    // scaling factor for map
 
 // int map[MAP_WIDTH][MAP_HEIGHT] = {
 //     {1,1,1,1,1,1,1,1,1,1,1,1},
@@ -53,6 +54,31 @@ void drawVerticalLine(SDL_Renderer* renderer, int x, int y1, int y2, int color) 
     int b = color & 0xFF;
     SDL_SetRenderDrawColor(renderer, r, g, b, 255);
     SDL_RenderDrawLine(renderer, x, y1, x, y2);
+}
+
+void drawMap(SDL_Renderer *renderer)
+{
+    for (int y = 0; y < MAP_HEIGHT; y++)
+    {
+        for (int x = 0; x < MAP_WIDTH; x++)
+        {
+            int color = map[y][x] ? MAP_WALL_COLOR : MAP_EMPTY_SPACE;
+            SDL_SetRenderDrawColor(renderer, (color >> 16) & 0xFF, (color >> 8) & 0xFF, color & 0xFF, 255);
+            SDL_Rect rect = {x * MAP_SCALE, y * MAP_SCALE, MAP_SCALE, MAP_SCALE};
+            SDL_RenderFillRect(renderer, &rect);
+        }
+
+        // player line of sight
+        double sightX = player.x + cos(player.angle * M_PI / 180) * 5;  // extend line of sight by 5 units
+        double sightY = player.y + sin(player.angle * M_PI / 180) * 5;
+        int screenX = player.x * MAP_SCALE + MAP_SCALE / 2;
+        int screenY = player.y * MAP_SCALE + MAP_SCALE / 2;
+        int sightEndX = sightX * MAP_SCALE + MAP_SCALE / 2;
+        int sightEndY = sightY * MAP_SCALE + MAP_SCALE / 2;
+
+        SDL_SetRenderDrawColor(renderer, (MAP_LINE_COLOR >> 16) & 0xFF, (MAP_LINE_COLOR >> 8) & 0xFF, MAP_LINE_COLOR & 0xFF, 255);
+        SDL_RenderDrawLine(renderer, screenX, screenY, sightEndX, sightEndY);
+    }
 }
 
 void castRays(SDL_Renderer* renderer) {
@@ -169,6 +195,11 @@ void process_input()
                     if (player.angle >= 360)
                         player.angle -= 360;    // ensure angle stays within the 0-360 range
                     break;
+                
+                case SDLK_m:
+                    showMap = !showMap;
+                    break;
+                
                 default:
                     break;
             }
@@ -254,20 +285,34 @@ void load_map(const char *filename)
         exit(1);
     }
 
-    for (int y = 0; y < MAP_HEIGHT; y++)
+    char buffer[256];
+    int y = 0;
+
+    while (fgets(buffer, sizeof(buffer), file) && y < MAP_HEIGHT)
     {
-        for (int x = 0; x < MAP_WIDTH; x++)
+        for (int x = 0; x < MAP_WIDTH && buffer[x]; x++)
         {
-            char c = fgetc(file);
-            if (c == EOF || c == '\n')
-            {
-                break;
-            }
-            map[y][x] = (c == '#') ? 1 : 0;
+            map[y][x] = (buffer[x] == '#') ? 1 : 0;
         }
-        // skip newline
-        fgetc(file);
+        y++;
     }
+
+
+    //for (int y = 0; y < MAP_HEIGHT; y++)
+    //{
+    //    for (int x = 0; x < MAP_WIDTH; x++)
+    //    {
+    //        char c = fgetc(file);
+    //        if (c == EOF || c == '\n')
+    //        {
+    //            break;
+    //        }
+    //        map[y][x] = (c == '#') ? 1 : 0;
+    //    }
+    //    // skip newline
+    //    fgetc(file);
+    //}
+    
     fclose(file);
 }
 
@@ -291,13 +336,19 @@ int main(int argc, char* argv[])
 
     init_window();
 
-    while (running) {
+    while (running)
+    {
         process_input();
         
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
         
         castRays(renderer);
+
+        if (showMap)
+        {
+            drawMap(renderer);
+        }
         
         SDL_RenderPresent(renderer);
     }
