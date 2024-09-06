@@ -2,7 +2,7 @@
 
 ## Installation
 * prerequisites: cmake, c-compiler(preferably gcc)
-* Clone this repo: `git clone "https://github.com/Mvoii/alx_maze_project.git"`
+* Clone this repo: `git clone "https://github.com/Mvoii/castlemania"`
 * run the game: `make run`
 
 ## Authors
