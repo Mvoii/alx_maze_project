@@ -1,4 +1,5 @@
 #include "maze.h"
+#include "textures.h"
 
 int map[MAP_WIDTH][MAP_HEIGHT];
 int running = 1;
@@ -24,6 +25,7 @@ int main(int argc, char *argv[])
     printf("\tgame  starting\n \n \tmap %s\n", argv[1]);
     init_window();
     load_map(argv[1]);
+    loadTextures(renderer);
 
     while (running)
     {
@@ -38,6 +40,7 @@ int main(int argc, char *argv[])
         {
             draw_map(renderer);
         }
+        // renderTextures(renderer);
 
         SDL_RenderPresent(renderer);
     }

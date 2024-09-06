@@ -1,4 +1,5 @@
 #include "maze.h"
+#include "textures.h"
 
 /**
  * init_window - Initialize the SDL window and renderer.
@@ -33,6 +34,8 @@ void init_window(void)
  */
 void destroy_window(void)
 {
+    //SDL_DestroyTexture(hedge_texture);
+    freeTextures();
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();

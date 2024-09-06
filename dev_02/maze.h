@@ -8,8 +8,8 @@
 
 #include <SDL2/SDL.h>
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH SDL_WINDOW_FULLSCREEN_DESKTOP // 640
+#define SCREEN_HEIGHT SDL_WINDOW_FULLSCREEN_DESKTOP // 480
 #define MAP_WIDTH 12
 #define MAP_HEIGHT 12
 #define FOV 60
@@ -28,6 +28,9 @@
 #define MAP_PLAYER_COLOR 0x0000FF   // Blue (for player)
 #define MAP_LINE_COLOR 0xFF00FF    // Magenta (for rays)
 // #define MAP_LINE_COLOR 0xFFFF00     // Yellow (for player line of sight)
+#define TILE_SIZE 64
+#define TEXTURE_WIDTH 64
+#define TEXTURE_HEIGHT 64
 
 typedef struct
 {
@@ -39,9 +42,15 @@ typedef struct
 extern Player player;  // starting point for player
 extern SDL_Window *window;
 extern SDL_Renderer *renderer;
+extern SDL_Texture *texture;
+extern SDL_Texture *hedge_texture;
 extern int map[MAP_WIDTH][MAP_HEIGHT];
 extern int running;
 extern int show_map;
+
+// New global textures for the hedge and tree
+extern SDL_Texture* hedgeTexture;
+extern SDL_Texture* treeTexture;
 
 void draw_vertical_line(SDL_Renderer *renderer, int x, int y1, int y2, int color);
 void draw_map(SDL_Renderer *renderer);
