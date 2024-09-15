@@ -2,6 +2,7 @@
 #define TEXTURES_H
 
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_image>
 
 void load_textures(SDL_Renderer *renderer);
 void free_textures();
