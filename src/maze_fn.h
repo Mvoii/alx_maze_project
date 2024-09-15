@@ -44,7 +44,7 @@ extern SDL_Window *window;
 extern SDL_Renderer *renderer;
 extern SDL_Texture *texture;
 extern SDL_Texture *hedge_texture;
-extern SDL_texture *tree_texture;
+extern SDL_Texture *tree_texture;
 extern int map[MAP_WIDTH][MAP_HEIGHT];
 extern int running;
 extern int show_map;
