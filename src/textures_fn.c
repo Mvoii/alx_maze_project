@@ -8,7 +8,7 @@ SDL_Texture *tree_texture = NULL;
 
 void load_textures(SDL_Renderer *renderer)
 {
-  hedge_texture = IMG_LoadTexture(renderer, "hedge.pgn");
+  hedge_texture = IMG_LoadTexture(renderer, "hedge.png");
 
   if (!hedge_texture)
   {
