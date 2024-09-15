@@ -1,4 +1,5 @@
 #include "maze_fn.h"
+#include "textures.h"
 
 int map[MAP_WIDTH][MAP_HEIGHT];
 int running = 1;
@@ -24,6 +25,7 @@ int main(int argc, char *argv[])
     printf("\tgame  starting\n \n \tmap %s\n", argv[1]);
     init_window();
     load_map(argv[1]);
+    load_textures(renderer);
 
     while (running)
     {
