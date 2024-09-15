@@ -28,6 +28,9 @@
 #define MAP_PLAYER_COLOR 0x0000FF   // Blue (for player)
 #define MAP_LINE_COLOR 0xFF00FF    // Magenta (for rays)
 // #define MAP_LINE_COLOR 0xFFFF00     // Yellow (for player line of sight)
+#define TILE_SIZE 64
+#define TEXTURE_WIDTH 64
+#define TEXTURE_HEIGHT 64
 
 typedef struct
 {
@@ -39,6 +42,9 @@ typedef struct
 extern Player player;  // starting point for player
 extern SDL_Window *window;
 extern SDL_Renderer *renderer;
+extern SDL_Texture *texture;
+extern SDL_Texture *hedge_texture;
+extern SDL_texture *tree_texture;
 extern int map[MAP_WIDTH][MAP_HEIGHT];
 extern int running;
 extern int show_map;
