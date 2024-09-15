@@ -1,5 +1,5 @@
 #include "maze_fn.h"
-#include "texture.h"
+#include "textures.h"
 /**
  * cast_ray - Cast a ray from the player's position to et a 3D view.
  * @renderer: The renderer to draw on.
