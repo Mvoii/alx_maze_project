@@ -1,5 +1,5 @@
 #include "textures.h"
-#include "maze.h"
+#include "maze_fn.h"
 
 // TODO: documet the functions
 
