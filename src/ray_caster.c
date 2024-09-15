@@ -1,4 +1,5 @@
 #include "maze_fn.h"
+#include "texture.h"
 /**
  * cast_ray - Cast a ray from the player's position to et a 3D view.
  * @renderer: The renderer to draw on.
@@ -51,10 +52,33 @@ void cast_ray(SDL_Renderer *renderer)
         }
 
         int ceiling = (SCREEN_HEIGHT / 2) - SCREEN_HEIGHT / distance;
-        int floor = SCREEN_HEIGHT - ceiling;
+        int floor_height = SCREEN_HEIGHT - ceiling;
 
         draw_vertical_line(renderer, x, 0, ceiling, CEILING_COLOR);
-        draw_vertical_line(renderer, x, ceiling, floor, wall_orientation ? WALL_COLOR_NS : WALL_COLOR_EW);
-        draw_vertical_line(renderer, x, floor, SCREEN_HEIGHT, FLOOR_COLOR);
+        /* draw_vertical_line(renderer, x, ceiling, floor, wall_orientation ? WALL_COLOR_NS : WALL_COLOR_EW);*/
+        draw_vertical_line(renderer, x, floor_height, SCREEN_HEIGHT, FLOOR_COLOR);
+
+        /* claculate texture x offset */
+        double wall_hitX;
+
+        if (wall_orientation == 1)
+        {
+            /* use y for EW walls */
+            wall_hitX = player.y + rayY * distance;
+        }
+        else
+        {
+            /* x for NS walls */
+            wall_hitX = player.x + rayX *distance;
+        }
+        /* keep only the fractional part */
+        wall_hitX -= floor(wall_hitX);
+
+        /* get correct x - coo on texture */
+        int textureX = (int)(wall_hitX * TEXTURE_WIDTH);
+
+        SDL_Rect src_rect = {textureX, 0, 1, TEXTURE_HEIGHT};
+        SDL_Rect dest_rect = {x, ceiling, 1, floor_height - ceiling};
+        SDL_RenderCopy(renderer, hedge_texture, &src_rect, &dest_rect);
     }
 }
