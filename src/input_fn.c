@@ -29,6 +29,10 @@ void process_input(void)
                         /* ensure that angle stays within 0 - 360 degrees */
                         player.angle += 360;
                     }
+                    player.dir_x = cos(player.angle * M_PI / 180);
+                    player.dir_y = sin(player.angle * M_PI / 180);
+                    player.plane_x = -player.dir_y * 0.66;
+                    player.plane_y = player.dir_x * 0.66;
                     break;
                 
                 case SDLK_RIGHT:
@@ -38,6 +42,10 @@ void process_input(void)
                         /* ensure angle stays within 0 -360 degrees */
                         player.angle -= 360;
                     }
+                    player.dir_x = cos(player.angle * M_PI / 180);
+                    player.dir_y = sin(player.angle * M_PI / 180);
+                    player.plane_x = -player.dir_y * 0.66;
+                    player.plane_y = player.dir_x * 0.66;
                     break;
                 
                 case SDLK_m:
@@ -61,6 +69,10 @@ void process_input(void)
                 /* stay within 0 - 360 degrees*/
                 player.angle -= 360;
             }
+            player.dir_x = cos(player.angle * M_PI / 180);
+            player.dir_y = sin(player.angle * M_PI / 180);
+            player.plane_x = -player.dir_y * 0.66;
+            player.plane_y = player.dir_x * 0.66;
             break;
         
         default:

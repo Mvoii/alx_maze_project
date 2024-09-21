@@ -14,20 +14,20 @@ SDL_Texture *tree_texture = NULL;
 void load_textures(SDL_Renderer *renderer)
 {
   hedge_texture = IMG_LoadTexture(renderer, "./src/hedge.png");
-
+ 
   if (!hedge_texture)
   {
     printf("Error loading hedge texture: %s\n", SDL_GetError());
     exit(1);
   }
 
-  //tree_texture = IMG_LoadTexture(renderer, "tree.png");
+  tree_texture = IMG_LoadTexture(renderer, "./src/apple_tree_260x216px.png");
 
-  //if (!tree_texture)
-  //{
-  //  printf("Error loading tree texture: %s\n", SDL_GetError());
-  //  exit(1);
-  //}
+  if (!tree_texture)
+  {
+    printf("Error loading tree texture: %s\n", SDL_GetError());
+    exit(1);
+  }
 }
 
 /**

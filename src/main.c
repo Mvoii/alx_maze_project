@@ -6,7 +6,7 @@ int running = 1;
 int show_map = 1;
 SDL_Window *window = NULL;
 SDL_Renderer *renderer = NULL;
-Player player = {2, 2, 0};
+Player player;
 
 /**
  * main - Entry point of the game.
@@ -25,6 +25,13 @@ int main(int argc, char *argv[])
     printf("\tgame  starting\n \n \tmap %s\n", argv[1]);
     init_window();
     load_map(argv[1]);
+
+    for (int i = 0; i < num_sprites; i++)
+    {
+        printf("sprite %d: x=%f, y=%f\n", i, tree_sprites[i].x, tree_sprites[i].y);
+    }
+    printf("\n player x=%f, y=%f\n", player.x, player.y);
+
     load_textures(renderer);
 
     while (running)

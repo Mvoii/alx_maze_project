@@ -16,5 +16,17 @@ int is_colliding(double x, double y)
     {
         return (1);
     }
+
+    for (int i = 0; i < num_sprites; i++)
+    {
+        double dx = x - tree_sprites[i].x;
+        double dy = y - tree_sprites[i].y;
+        double distance = sqrt(dx * dx + dy * dy);
+
+        if (distance < SPRITE_SIZE / 2)
+        {
+            return (1);
+        }
+    }
     return (0);
 }
