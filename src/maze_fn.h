@@ -9,8 +9,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+#define SCREEN_WIDTH 720
+#define SCREEN_HEIGHT 640
 #define MAP_WIDTH 12
 #define MAP_HEIGHT 12
 #define FOV 60
@@ -29,9 +29,9 @@
 #define MAP_PLAYER_COLOR 0x0000FF   // Blue (for player)
 #define MAP_LINE_COLOR 0xFF00FF    // Magenta (for rays)
 // #define MAP_LINE_COLOR 0xFFFF00     // Yellow (for player line of sight)
-#define TILE_SIZE 64
-#define TEXTURE_WIDTH 64
-#define TEXTURE_HEIGHT 64
+#define TILE_SIZE 1024
+#define TEXTURE_WIDTH 1024
+#define TEXTURE_HEIGHT 1024
 
 typedef struct
 {

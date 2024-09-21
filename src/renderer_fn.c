@@ -27,6 +27,20 @@ void init_window(void)
         fprintf(stderr, "Unable to create renderer: %s\n", SDL_GetError());
         exit(1);
     }
+
+    if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
+    {
+        fprintf(stderr, "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
+        exit(1);
+    }
+
+    // Enable linear filtering for textures
+    if (!SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"))
+    {
+        fprintf(stderr, "Warning: Linear texture filtering not enabled!\n");
+        exit(1);
+    }
+
 }
 
 /**

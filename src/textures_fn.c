@@ -6,9 +6,14 @@
 SDL_Texture *hedge_texture = NULL;
 SDL_Texture *tree_texture = NULL;
 
+/**
+ * load_textures - Load the textures for the game.
+ * @renderer: The SDL renderer.
+ */
+
 void load_textures(SDL_Renderer *renderer)
 {
-  hedge_texture = IMG_LoadTexture(renderer, "hedge.png");
+  hedge_texture = IMG_LoadTexture(renderer, "./src/hedge.png");
 
   if (!hedge_texture)
   {
@@ -16,15 +21,18 @@ void load_textures(SDL_Renderer *renderer)
     exit(1);
   }
 
-  tree_texture = IMG_LoadTexture(renderer, "tree.png");
+  //tree_texture = IMG_LoadTexture(renderer, "tree.png");
 
-  if (!tree_texture)
-  {
-    printf("Error loading tree texture: %s\n", SDL_GetError());
-    exit(1);
-  }
+  //if (!tree_texture)
+  //{
+  //  printf("Error loading tree texture: %s\n", SDL_GetError());
+  //  exit(1);
+  //}
 }
 
+/**
+ * free_textures - Free the textures.
+ */
 void free_textures()
 {
   if (hedge_texture)
